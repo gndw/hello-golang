@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"encoding/json"
+	"hello-golang/helpers"
 	"hello-golang/responses"
 	"hello-golang/services/health"
 	"io"
@@ -10,15 +10,17 @@ import (
 
 func HealthController(rw http.ResponseWriter, r *http.Request) {
 	rw.Header().Add("Content-type", "application/json")
-	health, err := health.CheckHealth()
-	if err != nil {
+	health, health_err := health.CheckHealth()
+	if health_err != nil {
 		rw.WriteHeader(http.StatusBadRequest)
 	}
 
-	response := responses.GenericResponse{Error: err, Data: health}
+	response := &responses.GenericResponse{Error: health_err, Data: health}
+	finalResponse, fr_err := helpers.StructToJSON(response)
+	if fr_err != nil {
+		io.WriteString(rw, fr_err.Error())
+		return
+	}
 
-	hobj, _ := json.Marshal(response)
-	var res string = string(hobj)
-
-	io.WriteString(rw, res)
+	io.WriteString(rw, finalResponse)
 }
