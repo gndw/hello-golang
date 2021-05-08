@@ -2,14 +2,13 @@ package errors
 
 import (
 	"bytes"
-	"container/list"
 	"fmt"
 )
 
 type Error struct {
-	Code    string     `json:"code"`
-	Message string     `json:"message"`
-	Details *list.List `json:"details"`
+	Code    string   `json:"code"`
+	Message string   `json:"message"`
+	Details []*Error `json:"details"`
 }
 
 func (e Error) Error() string {
@@ -17,9 +16,10 @@ func (e Error) Error() string {
 	buffer.WriteString(e.Message)
 
 	if e.Details != nil {
-		for d := e.Details.Front(); d != nil; d = d.Next() {
-			buffer.WriteString("\n")
-			buffer.WriteString(d.Value.(error).Error())
+		buffer.WriteString(" >> details:")
+		for _, value := range e.Details {
+			buffer.WriteString(" | ")
+			buffer.WriteString(value.Error())
 		}
 	}
 
@@ -27,11 +27,14 @@ func (e Error) Error() string {
 }
 
 func (e *Error) AddDetail(de *Error) {
+
 	if e.Details == nil {
-		e.Details = list.New()
+		e.Details = make([]*Error, 1)
+		e.Details[0] = de
+	} else {
+		e.Details = append(e.Details, de)
 	}
 
-	e.Details.PushBack(de)
 }
 
 const (
