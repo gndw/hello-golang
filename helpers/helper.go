@@ -15,3 +15,12 @@ func StructToJSON(value interface{}) (string, *errors.Error) {
 
 	return string(obj), nil
 }
+
+func StructToSafeJSONString(value interface{}) string {
+	result, err := StructToJSON(value)
+	if err != nil {
+		return err.Error()
+	} else {
+		return result
+	}
+}

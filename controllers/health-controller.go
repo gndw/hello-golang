@@ -17,10 +17,7 @@ func HealthController(rw http.ResponseWriter, r *http.Request) {
 
 	response := &responses.GenericResponse{Error: health_err, Data: health}
 
-	finalResponse, fr_err := helpers.StructToJSON(response)
-	if fr_err != nil {
-		io.WriteString(rw, fr_err.Error())
-	} else {
-		io.WriteString(rw, finalResponse)
-	}
+	finalResponse := helpers.StructToSafeJSONString(response)
+	io.WriteString(rw, finalResponse)
+
 }
