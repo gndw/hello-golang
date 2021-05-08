@@ -9,7 +9,7 @@ import (
 )
 
 func HealthController(rw http.ResponseWriter, r *http.Request) {
-	rw.Header().Add("Content-Type", "application/json")
+
 	health, health_err := health.CheckHealth()
 	if health_err != nil {
 		rw.WriteHeader(http.StatusBadRequest)

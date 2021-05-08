@@ -1,6 +1,7 @@
 package main
 
 import (
+	"hello-golang/middlewares"
 	"log"
 	"net/http"
 
@@ -12,5 +13,6 @@ import (
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/health", controllers.HealthController)
+	r.Use(middlewares.ContentTypeJSONMiddleware)
 	log.Fatal(http.ListenAndServe(":3000", r))
 }
