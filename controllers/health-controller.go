@@ -10,14 +10,17 @@ import (
 
 func HealthController(rw http.ResponseWriter, r *http.Request) {
 
+	response := &responses.GenericResponse{}
+
 	health, health_err := health.CheckHealth()
-	if health_err != nil {
+	if health_err == nil {
+		response.Data = health
+	} else {
 		rw.WriteHeader(http.StatusBadRequest)
+		response.Error = health_err
 	}
 
-	response := &responses.GenericResponse{Error: health_err, Data: health}
-
-	finalResponse := helpers.StructToSafeJSONString(response)
-	io.WriteString(rw, finalResponse)
+	str := helpers.StructToSafeJSONString(response)
+	io.WriteString(rw, str)
 
 }

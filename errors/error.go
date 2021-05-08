@@ -11,7 +11,7 @@ type Error struct {
 	Details []*Error `json:"details"`
 }
 
-func (e Error) Error() string {
+func (e *Error) Error() string {
 	var buffer bytes.Buffer
 	buffer.WriteString(e.Message)
 
