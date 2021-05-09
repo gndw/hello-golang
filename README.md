@@ -1,5 +1,5 @@
 # hello-golang
-Learning Golang for the first time
+Learning Golang for the first time. Creating Backend Server
 
 - Router using Mux : https://github.com/gorilla/mux
 - Livereloading using Air : https://github.com/cosmtrek/air
