@@ -30,6 +30,11 @@ func SendingOKResponse(rw http.ResponseWriter, data interface{}) {
 	io.WriteString(rw, StructToSafeJSONString(response))
 }
 
-func SendingUnauthorizedResponse(rw http.ResponseWriter) {
+func SendingUnauthorizedResponse(rw http.ResponseWriter, details ...*errors.Error) {
+	response := &responses.GenericResponse{Error: errors.CreateError(errors.AuthorizationFailed)}
+	for _, d := range details {
+		response.Error.AddDetail(d)
+	}
 	rw.WriteHeader(http.StatusUnauthorized)
+	io.WriteString(rw, StructToSafeJSONString(response))
 }

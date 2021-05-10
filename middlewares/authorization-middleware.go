@@ -6,9 +6,6 @@ import (
 	"hello-golang/helpers"
 	"hello-golang/services/auth"
 	"net/http"
-	"time"
-
-	"github.com/dgrijalva/jwt-go"
 )
 
 func AuthorizationMiddleware(next http.Handler) http.Handler {
@@ -20,27 +17,10 @@ func AuthorizationMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		tokenstring := string(runes[7:])
-		token, parse_error := jwt.ParseWithClaims(
-			tokenstring,
-			&auth.UserClaims{},
-			func(token *jwt.Token) (interface{}, error) {
-				return []byte("secret"), nil
-			},
-		)
-		if parse_error != nil {
-			helpers.SendingUnauthorizedResponse(rw)
-			return
-		}
-
-		claims, ok := token.Claims.(*auth.UserClaims)
-		if !ok {
-			helpers.SendingUnauthorizedResponse(rw)
-			return
-		}
-
-		if claims.ExpiresAt < time.Now().UTC().Unix() {
-			helpers.SendingUnauthorizedResponse(rw)
+		token := string(runes[7:])
+		claims, validate_error := auth.ValidateToken(token)
+		if validate_error != nil {
+			helpers.SendingUnauthorizedResponse(rw, validate_error)
 			return
 		}
 
