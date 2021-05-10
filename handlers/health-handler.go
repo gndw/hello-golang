@@ -13,7 +13,7 @@ func HealthHandler(rw http.ResponseWriter, r *http.Request) {
 		helpers.SendingBadRequestResponse(rw, health_err)
 		return
 	} else {
-		helpers.SendingOKRequestResponse(rw, health)
+		helpers.SendingOKResponse(rw, health)
 		return
 	}
 }

@@ -16,6 +16,10 @@ func main() {
 	r.HandleFunc("/health", handlers.HealthHandler).Methods("GET")
 	r.HandleFunc("/auth/login", handlers.LoginHandler).Methods("POST")
 
+	dataroute := r.PathPrefix("/data").Subrouter()
+	dataroute.Use(middlewares.AuthorizationMiddleware)
+	dataroute.HandleFunc("/self", handlers.DataSelfHandler).Methods("POST")
+
 	r.Use(middlewares.ContentTypeJSONMiddleware)
 	r.Use(middlewares.ReadBodyFromHTTPRequestMiddleware)
 

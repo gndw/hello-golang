@@ -2,12 +2,9 @@ package middlewares
 
 import (
 	"context"
+	"hello-golang/constants"
 	"hello-golang/helpers"
 	"net/http"
-)
-
-const (
-	Body key = iota
 )
 
 func ReadBodyFromHTTPRequestMiddleware(next http.Handler) http.Handler {
@@ -19,7 +16,7 @@ func ReadBodyFromHTTPRequestMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		ctx := context.WithValue(r.Context(), Body, body_string)
+		ctx := context.WithValue(r.Context(), constants.Context_Body, body_string)
 		next.ServeHTTP(rw, r.WithContext(ctx))
 	})
 }
