@@ -10,8 +10,17 @@ type LoginData struct {
 	Password string `json:"password"`
 }
 
+type RegisterData struct {
+	Email string `json:"email"`
+	LoginData
+}
+
 type LoginRequest struct {
 	Data LoginData `json:"Data"`
+}
+
+type RegisterRequest struct {
+	Data RegisterData `json:"Data"`
 }
 
 func GenerateValidationForLoginData(logindata *LoginData) *[]Validation {
@@ -33,4 +42,22 @@ func GenerateValidationForLoginData(logindata *LoginData) *[]Validation {
 				return nil
 			}
 		}}
+}
+
+func GenerateValidationForRegisterData(registerdata *RegisterData) *[]Validation {
+
+	// Here you can check and sanitize your request data
+
+	loginDataValidations := GenerateValidationForLoginData(&registerdata.LoginData)
+	registerDataValidations := []Validation{
+		func() *errors.Error {
+			if registerdata.Email == "" {
+				return errors.CreateErrorFromPrimitiveError(gerrors.New("email must not be empty"))
+			} else {
+				return nil
+			}
+		}}
+
+	x := append(registerDataValidations, *loginDataValidations...)
+	return &x
 }

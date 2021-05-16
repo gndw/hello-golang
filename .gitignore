@@ -16,3 +16,6 @@
 
 # Air
 tmp
+
+# Postgree Docker Volume
+db

@@ -1,7 +1,6 @@
 package auth
 
 import (
-	gerrors "errors"
 	"hello-golang/errors"
 	"time"
 
@@ -49,10 +48,6 @@ func ValidateToken(token string) (*UserClaims, *errors.Error) {
 	claims, ok := parsedToken.Claims.(*UserClaims)
 	if !ok {
 		return nil, errors.CreateError(errors.FailedToParseToJSON)
-	}
-
-	if claims.ExpiresAt < time.Now().UTC().Unix() {
-		return nil, errors.CreateErrorFromPrimitiveError(gerrors.New("token expired"))
 	}
 
 	return claims, nil

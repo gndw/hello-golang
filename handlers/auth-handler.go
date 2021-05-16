@@ -29,3 +29,25 @@ func LoginHandler(rw http.ResponseWriter, r *http.Request) {
 	}
 
 }
+
+func RegisterHandler(rw http.ResponseWriter, r *http.Request) {
+
+	request := &requests.RegisterRequest{}
+	structify_error := helpers.JSONStringToStruct(
+		r.Context().Value(constants.Context_Body).(string), request,
+		requests.GenerateValidationForRegisterData(&request.Data))
+	if structify_error != nil {
+		helpers.SendingBadRequestResponse(rw, structify_error)
+		return
+	}
+
+	auth, auth_err := auth.Register(request.Data.Email, request.Data.Username, request.Data.Password)
+	if auth_err != nil {
+		helpers.SendingBadRequestResponse(rw, auth_err)
+		return
+	} else {
+		helpers.SendingOKResponse(rw, auth)
+		return
+	}
+
+}
