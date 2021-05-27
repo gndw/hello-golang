@@ -7,7 +7,7 @@ services:
     image: postgres
     restart: always
     volumes:
-      - "./db:/var/lib/mysql"  
+      - "./db:/var/lib/postgresql/data"  
     ports:
        - 5432:5432
     environment:
