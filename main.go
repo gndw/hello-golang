@@ -1,6 +1,28 @@
 package main
 
+import "hello-golang/app"
+
+// "hello-golang/app"
+// "hello-golang/app/master"
+// "hello-golang/v1/functions/startup"
+// "hello-golang/v1/repositories/http_gorilla_mux"
+
+
 func main() {
+
+	// Creating the App Instance
+	app := &app.App{}
+	app.New()
+
+	// Initialization Process / Startup
+	
+	
+	
+	
+	
+	// startup := &startup.Startup{}
+	// startup.Register(mux)
+	// startup.Start()
 
 	// r := mux.NewRouter()
 

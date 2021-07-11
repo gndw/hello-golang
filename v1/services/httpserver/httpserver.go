@@ -1,7 +1,7 @@
-package startup
+package httpserver
 
 import "hello-golang/v1/functions/stderror"
 
-type IStartup interface {
+type IHttpServer interface {
 	Startup() *stderror.Error
 }

@@ -27,11 +27,8 @@ func (e *Error) Error() string {
 
 func (e *Error) AddDetail(de *Error) {
 
-	if e.Details == nil {
-		e.Details = make([]*Error, 1)
-		e.Details[0] = de
-	} else {
+	
 		e.Details = append(e.Details, de)
-	}
+	
 
 }
