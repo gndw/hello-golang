@@ -1,41 +1,33 @@
 package main
 
-import "hello-golang/app"
+import (
+	"hello-golang/app"
 
-// "hello-golang/app"
-// "hello-golang/app/master"
-// "hello-golang/v1/functions/startup"
-// "hello-golang/v1/repositories/http_gorilla_mux"
+	"go.uber.org/dig"
+	"go.uber.org/fx"
+)
 
 
 func main() {
 
-	// Creating the App Instance
-	app := &app.App{}
-	app.New()
+	container := dig.New()
+	app.SetupProviders(container)
 
-	// Initialization Process / Startup
+	appl := app.Application{}
+	startups := appl.Startup()
 	
-	
-	
-	
-	
-	// startup := &startup.Startup{}
-	// startup.Register(mux)
-	// startup.Start()
+	var invokes []fx.Option
+	invokes = append(invokes, fx.Invoke(func (lc fx.Lifecycle)  {	
+		container.Provide(func() fx.Lifecycle {
+			return lc
+		})
+	}),)
+	for _, s := range startups {
+		invokes = append(invokes, fx.Invoke(func ()  {
+			container.Invoke(s)
+		}))
+	}
 
-	// r := mux.NewRouter()
-
-	// r.HandleFunc("/health", handlers.HealthHandler).Methods("GET")
-	// r.HandleFunc("/auth/login", handlers.LoginHandler).Methods("POST")
-	// r.HandleFunc("/auth/register", handlers.RegisterHandler).Methods("POST")
-
-	// dataroute := r.PathPrefix("/data").Subrouter()
-	// dataroute.Use(middlewares.AuthorizationMiddleware)
-	// dataroute.HandleFunc("/self", handlers.DataSelfHandler).Methods("POST")
-
-	// r.Use(middlewares.ContentTypeJSONMiddleware)
-	// r.Use(middlewares.ReadBodyFromHTTPRequestMiddleware)
-
-	// log.Fatal(http.ListenAndServe(":3000", r))
+	app := fx.New(invokes...)
+	app.Run()
 }

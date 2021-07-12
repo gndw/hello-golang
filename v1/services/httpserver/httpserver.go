@@ -1,7 +1,13 @@
 package httpserver
 
-import "hello-golang/v1/functions/stderror"
+import (
+	"hello-golang/v1/functions/stderror"
+
+	"github.com/gorilla/mux"
+)
+
 
 type IHttpServer interface {
-	Startup() *stderror.Error
+	AddHttpRouter() *stderror.Error
+	Router() *mux.Router
 }
