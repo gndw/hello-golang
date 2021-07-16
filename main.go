@@ -1,33 +1,34 @@
 package main
 
 import (
-	"hello-golang/app"
-
-	"go.uber.org/dig"
-	"go.uber.org/fx"
+	"hello-golang/v1/functions/auth"
+	"hello-golang/v1/functions/health"
+	"hello-golang/v1/handlers/httphandler"
+	"hello-golang/v1/packages/fxwrap"
+	"hello-golang/v1/packages/gochi"
+	"hello-golang/v1/startups/httpsups"
 )
 
 
 func main() {
 
-	container := dig.New()
-	app.SetupProviders(container)
+	app := fxwrap.Setup(
+		[]interface{}{
+			// Set all Providers Here
+			// Set Functions
+			auth.GetFunction,
+			health.GetFunction,
+			// Set Handlers
+			httphandler.GetHealthHandler,
+			httphandler.GetAuthHandler,
+			// Set Services
+			gochi.GetHttpServer,
+		},
+		[]interface{}{
+			// Set all Startups Here
+			httpsups.StartHealthSystem,
+		},
+	)
 
-	appl := app.Application{}
-	startups := appl.Startup()
-	
-	var invokes []fx.Option
-	invokes = append(invokes, fx.Invoke(func (lc fx.Lifecycle)  {	
-		container.Provide(func() fx.Lifecycle {
-			return lc
-		})
-	}),)
-	for _, s := range startups {
-		invokes = append(invokes, fx.Invoke(func ()  {
-			container.Invoke(s)
-		}))
-	}
-
-	app := fx.New(invokes...)
 	app.Run()
 }
