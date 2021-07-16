@@ -1,7 +1,7 @@
 package httpsups
 
 import (
-	"hello-golang/v1/handlers/httphandler"
+	"hello-golang/v1/domains/handlers/httphandler"
 	"hello-golang/v1/services/httpserver"
 	"log"
 )

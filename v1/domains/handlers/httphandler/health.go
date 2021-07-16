@@ -1,7 +1,7 @@
 package httphandler
 
 import (
-	"hello-golang/v1/functions/health"
+	"hello-golang/v1/domains/functions/health"
 	"hello-golang/v1/helpers"
 	"net/http"
 )

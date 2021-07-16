@@ -1,12 +1,12 @@
 package main
 
 import (
-	"hello-golang/v1/functions/auth"
-	"hello-golang/v1/functions/health"
-	"hello-golang/v1/handlers/httphandler"
+	"hello-golang/v1/domains/functions/auth"
+	"hello-golang/v1/domains/functions/health"
+	"hello-golang/v1/domains/handlers/httphandler"
+	"hello-golang/v1/domains/startups/httpsups"
 	"hello-golang/v1/packages/fxwrap"
 	"hello-golang/v1/packages/gochi"
-	"hello-golang/v1/startups/httpsups"
 )
 
 
