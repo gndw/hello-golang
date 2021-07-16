@@ -5,30 +5,34 @@ import (
 	"hello-golang/v1/domains/functions/health"
 	"hello-golang/v1/domains/handlers/httphandler"
 	"hello-golang/v1/domains/startups/httpsups"
-	"hello-golang/v1/packages/fxwrap"
+	"hello-golang/v1/functions/builder"
 	"hello-golang/v1/packages/gochi"
+	"os"
 )
 
 
 func main() {
 
-	app := fxwrap.Setup(
-		[]interface{}{
-			// Set all Providers Here
-			// Set Functions
+	app, err := builder.CreateApp(
+		builder.ProvideServices(
+			gochi.GetHttpServer,
+		),
+		builder.ProvideFunctions(
 			auth.GetFunction,
 			health.GetFunction,
-			// Set Handlers
-			httphandler.GetHealthHandler,
+		),
+		builder.ProvideHandlers(
 			httphandler.GetAuthHandler,
-			// Set Services
-			gochi.GetHttpServer,
-		},
-		[]interface{}{
-			// Set all Startups Here
+			httphandler.GetHealthHandler,
+		),
+		builder.ProvideStartups(
 			httpsups.StartHealthSystem,
-		},
+		),
 	)
+
+	if (err != nil) {
+		os.Exit(1)
+	}
 
 	app.Run()
 }
