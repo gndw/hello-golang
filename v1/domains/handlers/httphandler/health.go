@@ -2,8 +2,9 @@ package httphandler
 
 import (
 	"hello-golang/v1/domains/functions/health"
-	"hello-golang/v1/helpers"
 	"net/http"
+
+	"github.com/go-chi/render"
 )
 
 
@@ -22,9 +23,10 @@ func (h *HealthHandler) Handler(rw http.ResponseWriter, r *http.Request) {
 	
 	stat, err := h.f.Get()
 	if (err != nil) {
-		helpers.SendingBadRequestResponse(rw, err)
+		render.Status(r, 400)
+		render.JSON(rw, r, GenericResponse{Error: err.Error()})
 		return
 	}
 
-	helpers.SendingOKResponse(rw, stat)
+	render.JSON(rw, r, GenericResponse{Data: stat})
 }

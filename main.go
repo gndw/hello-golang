@@ -17,7 +17,7 @@ func main() {
 
 	app, err := builder.CreateApp(
 		fxb.ProvideServices(
-			gochi.GetHttpRouter,
+			gochi.GetRouter,
 			server.GetService,
 		),
 		fxb.ProvideFunctions(

@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-chi/chi/v5 v5.0.3
+	github.com/go-chi/render v1.0.1
 	github.com/go-pg/pg/v10 v10.9.1
 	github.com/onsi/gomega v1.12.0 // indirect
 	github.com/sirupsen/logrus v1.8.1

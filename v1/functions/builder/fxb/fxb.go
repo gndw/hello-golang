@@ -31,10 +31,7 @@ func CreateContainer() (opt model.BuilderOption) {
 }
 
 func CreateFxApp() (opt model.BuilderOption) {
-
 	return func(app *model.App) (err error) {
-
-		// Create the App
 		app.Fx.Instance = fx.New(app.Fx.Options...)
 		return nil
 	}
