@@ -1,22 +1,17 @@
 package builder
 
 import (
-	"go.uber.org/fx"
+	"hello-golang/v1/functions/builder/fxb"
+	"hello-golang/v1/functions/builder/model"
 )
 
-type App struct {
-	providers []interface{}
-	startups []interface{}
-	instance *fx.App
-}
 
-func (a *App) Run () {
-	a.instance.Run()
-}
+func CreateApp(options ...model.BuilderOption) (app *model.App, err error) {
 
-func CreateApp(options ...BuilderOption) (app *App, err error) {
+	app = &model.App{}
 
-	app = &App{}
+	// Create FX App is executed at the end
+	options = append(options, fxb.CreateFxApp())
 
 	for _, option := range options {
 		err = option(app)
@@ -25,12 +20,5 @@ func CreateApp(options ...BuilderOption) (app *App, err error) {
 		}
 	}
 
-	fxapp, err := ConfigApp(app.providers, app.startups)
-	if (err != nil) {
-		return nil, err
-	}
-
-	app.instance = fxapp
 	return app, nil
 }
-

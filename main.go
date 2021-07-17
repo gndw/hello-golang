@@ -6,6 +6,7 @@ import (
 	"hello-golang/v1/domains/handlers/httphandler"
 	"hello-golang/v1/domains/startups/httpsups"
 	"hello-golang/v1/functions/builder"
+	"hello-golang/v1/functions/builder/fxb"
 	"hello-golang/v1/packages/gochi"
 	"hello-golang/v1/services/http/server"
 	"log"
@@ -15,19 +16,19 @@ import (
 func main() {
 
 	app, err := builder.CreateApp(
-		builder.ProvideServices(
+		fxb.ProvideServices(
 			gochi.GetHttpRouter,
 			server.GetService,
 		),
-		builder.ProvideFunctions(
+		fxb.ProvideFunctions(
 			auth.GetFunction,
 			health.GetFunction,
 		),
-		builder.ProvideHandlers(
+		fxb.ProvideHandlers(
 			httphandler.GetAuthHandler,
 			httphandler.GetHealthHandler,
 		),
-		builder.ProvideStartups(
+		fxb.ProvideStartups(
 			httpsups.StartHealthSystem,
 		),
 	)
