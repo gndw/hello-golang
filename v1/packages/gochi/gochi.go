@@ -1,8 +1,8 @@
 package gochi
 
 import (
-	"context"
-	"hello-golang/v1/services/httpserver"
+	"hello-golang/v1/services/http/model"
+	"hello-golang/v1/services/http/router"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -11,33 +11,21 @@ import (
 
 type Instance struct {
 	router *chi.Mux
-	server *http.Server
 }
 
-func GetHttpServer(lc fx.Lifecycle) (httpserver.Interface, error) {
+func GetHttpRouter(lc fx.Lifecycle) (router.Interface, error) {
 
 	ins := &Instance{}
 	ins.router = chi.NewRouter()
-	ins.server = &http.Server{Addr: "0.0.0.0:3000", Handler: ins.router}
-
-	lc.Append(fx.Hook{
-		OnStart: func(context.Context) error {
-			go ins.server.ListenAndServe()
-			return nil
-		},
-		OnStop: func(ctx context.Context) error {
-			return nil
-		},
-	})
 
 	return ins, nil
 }
 
-func (x *Instance) AddHttpHandler(req httpserver.AddRequest) (err error) {
-
-	switch req.Method {
-	case "GET":
-		x.router.Get(req.Endpoint, req.Handler)
-	}
+func (x *Instance) AddHttpHandler(req model.AddRequest) (err error) {
+	x.router.MethodFunc(req.Method, req.Endpoint, req.Handler)
 	return nil
+}
+
+func (x *Instance) GetHandler() (handler http.Handler, err error) {
+	return x.router, nil
 }

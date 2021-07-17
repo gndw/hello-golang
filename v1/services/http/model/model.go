@@ -1,4 +1,4 @@
-package httpserver
+package model
 
 import "net/http"
 

@@ -2,17 +2,18 @@ package httpsups
 
 import (
 	"hello-golang/v1/domains/handlers/httphandler"
-	"hello-golang/v1/services/httpserver"
+	"hello-golang/v1/services/http/model"
+	"hello-golang/v1/services/http/server"
 	"log"
 )
 
 
-func StartHealthSystem(server httpserver.Interface, handler *httphandler.HealthHandler) {
+func StartHealthSystem(server *server.Service, handler *httphandler.HealthHandler) {
 
 	log.Println("Starting Health System...")
 
 	server.AddHttpHandler(
-		httpserver.AddRequest{
+		model.AddRequest{
 			Method: "GET",
 			Endpoint: "/",
 			Handler: handler.Handler,

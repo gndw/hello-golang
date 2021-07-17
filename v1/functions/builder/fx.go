@@ -1,4 +1,4 @@
-package fx
+package builder
 
 import (
 	"go.uber.org/dig"
@@ -11,9 +11,12 @@ func ConfigApp(providers []interface{}, startups []interface{}) (fxapp *fx.App, 
 	container := dig.New()
 
 	var invokes []fx.Option
-	invokes = append(invokes, fx.Invoke(func(lc fx.Lifecycle) {
+	invokes = append(invokes, fx.Invoke(func(lc fx.Lifecycle, sd fx.Shutdowner) {
 		container.Provide(func() fx.Lifecycle {
 			return lc
+		})
+		container.Provide(func() fx.Shutdowner {
+			return sd
 		})
 	}))
 
@@ -27,7 +30,6 @@ func ConfigApp(providers []interface{}, startups []interface{}) (fxapp *fx.App, 
 			container.Invoke(f)
 		}))
 	}
-			
-
+	
 	return fx.New(invokes...), nil
 }

@@ -7,7 +7,8 @@ import (
 	"hello-golang/v1/domains/startups/httpsups"
 	"hello-golang/v1/functions/builder"
 	"hello-golang/v1/packages/gochi"
-	"os"
+	"hello-golang/v1/services/http/server"
+	"log"
 )
 
 
@@ -15,7 +16,8 @@ func main() {
 
 	app, err := builder.CreateApp(
 		builder.ProvideServices(
-			gochi.GetHttpServer,
+			gochi.GetHttpRouter,
+			server.GetService,
 		),
 		builder.ProvideFunctions(
 			auth.GetFunction,
@@ -31,7 +33,7 @@ func main() {
 	)
 
 	if (err != nil) {
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
 	app.Run()
