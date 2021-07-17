@@ -22,7 +22,7 @@ func GetLog() (log.Interface, error) {
 }
 
 func (x *Instance) Printf(str string, args ...interface{}) {
-	logrus.Infof(str, args...)
+	logrus.Debugf(str, args...)
 }
 
 func (x *Instance) Tracef(str string, args ...interface{}) {

@@ -2,6 +2,7 @@ package builder
 
 import (
 	"hello-golang/v1/functions/builder/fxb"
+	"hello-golang/v1/functions/builder/logb"
 	"hello-golang/v1/functions/builder/model"
 )
 
@@ -15,11 +16,14 @@ func CreateApp(bopts ...model.BuilderOption) (app *model.App, err error) {
 	options = append(options, fxb.CreateContainer())
 
 	// Fill in options from Builder
+	// All of this is user specs, inputted from main.go
 	options = append(options, bopts...)
 
 	// Fill in Default Options
-	options = append(options, fxb.OverrideFxLogger())
-	options = append(options, fxb.UseDefaultLogger())
+	// All default option will check app status before making any changes
+	// to makesure not overriding user specific option
+	options = append(options, logb.UseDefaultLogger())
+	options = append(options, logb.OverrideFxLogger())
 
 	// Create FX App must be executed last
 	options = append(options, fxb.CreateFxApp())

@@ -1,13 +1,22 @@
 package model
 
-import "hello-golang/v1/functions/builder/fxb/model"
+import (
+	"go.uber.org/dig"
+	"go.uber.org/fx"
+)
 
 type App struct {
-	Fx model.FxModel
+	Fx struct {
+		Container *dig.Container
+		Instance  *fx.App
+		Options   []fx.Option
+	}
+	Log struct {
+		UseDefaultLogger *NullableBoolean
+		IsOverrideFxLogger *NullableBoolean
+	}
 }
 
 func (a *App) Run() {
 	a.Fx.Instance.Run()
 }
-
-type BuilderOption func(*App) error

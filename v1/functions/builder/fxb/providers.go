@@ -2,7 +2,6 @@ package fxb
 
 import (
 	"hello-golang/v1/functions/builder/model"
-	"hello-golang/v1/packages/logrus"
 	"hello-golang/v1/services/log"
 
 	glog "log"
@@ -48,24 +47,6 @@ func ProvideStartups(fs ...interface{}) (opt model.BuilderOption) {
 				}
 			}))
 		}
-		return nil
-	}
-}
-
-func OverrideFxLogger() (opt model.BuilderOption) {
-	return func(app *model.App) (err error) {
-		logrus, err := logrus.GetLog()
-		if (err != nil) {
-			return
-		}
-		app.Fx.Options = append(app.Fx.Options, fx.Logger(logrus))
-		return nil
-	}
-}
-
-func UseDefaultLogger() (opt model.BuilderOption) {
-	return func(app *model.App) (err error) {
-		app.Fx.Container.Provide(logrus.GetLog)
 		return nil
 	}
 }
