@@ -1,9 +1,13 @@
 package model
 
-import "go.uber.org/fx"
+import (
+	"go.uber.org/dig"
+	"go.uber.org/fx"
+)
+
 
 type FxModel struct {
-	Providers []interface{}
-	Startups  []interface{}
+	Container *dig.Container
 	Instance  *fx.App
+	Options  []fx.Option
 }

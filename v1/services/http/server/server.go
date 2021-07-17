@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"hello-golang/v1/services/http/model"
 	"hello-golang/v1/services/http/router"
+	"hello-golang/v1/services/log"
 	"net/http"
 
 	"go.uber.org/fx"
@@ -15,16 +16,18 @@ type Service struct {
 	router router.Interface
 }
 
-func GetService(lc fx.Lifecycle, shutdowner fx.Shutdowner, router router.Interface) (service *Service, err error) {
+func GetService(lc fx.Lifecycle, shutdowner fx.Shutdowner, router router.Interface, log log.Interface) (service *Service, err error) {
 	
 	handler, err := router.GetHandler()
 	if (err != nil) {
 		return
 	}
 
+	port := 3000
+
 	service = &Service{
 		router: router,
-		server: &http.Server{Addr: "0.0.0.0:3000", Handler: handler},
+		server: &http.Server{Addr: fmt.Sprintf("0.0.0.0:%v", port) , Handler: handler},
 	}
 
 	lc.Append(fx.Hook{
@@ -32,10 +35,11 @@ func GetService(lc fx.Lifecycle, shutdowner fx.Shutdowner, router router.Interfa
 			go func() {
 				err := service.server.ListenAndServe()
 				if err != nil && err != http.ErrServerClosed {
-					fmt.Println("server failed to start. err: ", err)
+					log.Errorf("server failed to start. err: ", err)
 					shutdowner.Shutdown()
 				}
 			}()
+			log.Infof("server is started in port %v...", port)
 			return nil
 		},
 		OnStop: func(ctx context.Context) error {
