@@ -14,7 +14,7 @@ func CreateContainer() (opt model.BuilderOption) {
 		// Hold all provider funcs
 		app.Fx.Container = dig.New()
 
-		// Appending Lifecycle & Shutdowner into Container
+		// Appending Lifecycle & Shutdowner from fx into our Container
 		// to make it accessible to other providers
 		app.Fx.Options = append(app.Fx.Options, fx.Invoke(func(lc fx.Lifecycle, sd fx.Shutdowner) {
 			app.Fx.Container.Provide(func() fx.Lifecycle {

@@ -16,7 +16,7 @@ func CreateApp(bopts ...model.BuilderOption) (app *model.App, err error) {
 	options = append(options, fxb.CreateContainer())
 
 	// Fill in options from Builder
-	// All of this is user specs, inputted from main.go / app entry point
+	// All of this are user specs, inputted from main.go / app entry point
 	options = append(options, bopts...)
 
 	// Fill in Default Options

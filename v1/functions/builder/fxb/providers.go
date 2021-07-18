@@ -37,7 +37,7 @@ func ProvideStartups(fs ...interface{}) (opt model.BuilderOption) {
 	return func(app *model.App) (err error) {
 		for _, f := range fs {
 			
-			// this method is used to store memory of f to be invoked in fx.Invoke
+			// this cmd line is used to store memory of f to be invoked in fx.Invoke
 			// if not, then it will be replaced by next iteration
 			savedFunc := f
 

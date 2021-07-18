@@ -36,6 +36,9 @@ func OverrideFxLogger() (opt model.BuilderOption) {
 			return
 		}
 		app.Fx.Options = append(app.Fx.Options, fx.Logger(myCustomLog))
+		app.Log.IsOverrideFxLogger = &model.NullableBoolean{
+			Value: true,
+		}
 		return nil
 	}
 }
@@ -58,6 +61,9 @@ func UseDefaultLogger() (opt model.BuilderOption) {
 		}
 
 		app.Fx.Container.Provide(factory.GetLog())
+		app.Log.UseDefaultLogger = &model.NullableBoolean{
+			Value: true,
+		}
 		return nil
 	}
 }
