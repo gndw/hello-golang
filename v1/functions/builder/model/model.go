@@ -16,7 +16,3 @@ type App struct {
 		IsOverrideFxLogger *NullableBoolean
 	}
 }
-
-func (a *App) Run() {
-	a.Fx.Instance.Run()
-}

@@ -31,14 +31,14 @@ func GetService(lc fx.Lifecycle, shutdowner fx.Shutdowner, router router.Interfa
 	}
 
 	lc.Append(fx.Hook{
-		OnStart: func(context.Context) error {
+		OnStart: func(context.Context) (err error) {
 			go func() {
 				err := service.server.ListenAndServe()
 				if err != nil && err != http.ErrServerClosed {
 					log.Errorf("server failed to start. err: ", err)
 					shutdowner.Shutdown()
 				}
-			}()
+				}()
 			log.Infof("server is started in port %v...", port)
 			return nil
 		},

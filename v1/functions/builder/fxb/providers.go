@@ -12,7 +12,10 @@ import (
 func ProvideGenerics(fs ...interface{}) (opt model.BuilderOption) {
 	return func(app *model.App) (err error) {
 		for _, f := range fs {
-			app.Fx.Container.Provide(f)
+			err = app.Fx.Container.Provide(f)
+			if (err != nil) {
+				return
+			}
 		}
 		return nil
 	}

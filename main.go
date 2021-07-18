@@ -9,7 +9,7 @@ import (
 	"hello-golang/v1/functions/builder/fxb"
 	"hello-golang/v1/packages/factory"
 	"hello-golang/v1/services/http/server"
-	"log"
+	"os"
 )
 
 
@@ -35,7 +35,7 @@ func main() {
 	)
 
 	if (err != nil) {
-		log.Fatal(err)
+		os.Exit(1)
 	}
 
 	app.Run()
