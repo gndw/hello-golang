@@ -21,12 +21,12 @@ func GetHealthHandler(f *health.Function) (handler *HealthHandler, err error) {
 
 func (h *HealthHandler) Handler(rw http.ResponseWriter, r *http.Request) {
 	
-	stat, err := h.f.Get()
+	serverStatus, err := h.f.GetServerHealth()
 	if (err != nil) {
 		render.Status(r, 400)
 		render.JSON(rw, r, GenericResponse{Error: err.Error()})
 		return
 	}
 
-	render.JSON(rw, r, GenericResponse{Data: stat})
+	render.JSON(rw, r, GenericResponse{Data: serverStatus})
 }

@@ -7,7 +7,7 @@ import (
 	"hello-golang/v1/domains/startups/httpsups"
 	"hello-golang/v1/functions/builder"
 	"hello-golang/v1/functions/builder/fxb"
-	"hello-golang/v1/packages/gochi"
+	"hello-golang/v1/packages/factory"
 	"hello-golang/v1/services/http/server"
 	"log"
 )
@@ -17,7 +17,7 @@ func main() {
 
 	app, err := builder.CreateApp(
 		fxb.ProvideServices(
-			gochi.GetRouter,
+			factory.GetRouter(),
 			server.GetService,
 		),
 		fxb.ProvideFunctions(
@@ -30,6 +30,7 @@ func main() {
 		),
 		fxb.ProvideStartups(
 			httpsups.StartHealthSystem,
+			httpsups.StartAuthSystem,
 		),
 	)
 

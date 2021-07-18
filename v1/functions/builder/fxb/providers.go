@@ -36,8 +36,13 @@ func ProvideHandlers(fs ...interface{}) (opt model.BuilderOption) {
 func ProvideStartups(fs ...interface{}) (opt model.BuilderOption) {
 	return func(app *model.App) (err error) {
 		for _, f := range fs {
+			
+			// this method is used to store memory of f to be invoked in fx.Invoke
+			// if not, then it will be replaced by next iteration
+			savedFunc := f
+
 			app.Fx.Options = append(app.Fx.Options, fx.Invoke(func (sd fx.Shutdowner) {
-				err := app.Fx.Container.Invoke(f)
+				err := app.Fx.Container.Invoke(savedFunc)
 				if (err != nil) {
 					logerr := app.Fx.Container.Invoke(func (logg log.Interface){ logg.Errorf("failed to invoke startup. err: %s", err) })
 					if (logerr != nil) {

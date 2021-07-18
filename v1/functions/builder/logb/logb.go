@@ -2,7 +2,7 @@ package logb
 
 import (
 	"hello-golang/v1/functions/builder/model"
-	"hello-golang/v1/packages/logrus"
+	"hello-golang/v1/packages/factory"
 	"hello-golang/v1/services/log"
 
 	glog "log"
@@ -31,11 +31,11 @@ func OverrideFxLogger() (opt model.BuilderOption) {
 			return
 		}
 
-		logrus, err := logrus.GetLog()
+		myCustomLog, err := factory.GetLog()()
 		if err != nil {
 			return
 		}
-		app.Fx.Options = append(app.Fx.Options, fx.Logger(logrus))
+		app.Fx.Options = append(app.Fx.Options, fx.Logger(myCustomLog))
 		return nil
 	}
 }
@@ -57,7 +57,7 @@ func UseDefaultLogger() (opt model.BuilderOption) {
 			return
 		}
 
-		app.Fx.Container.Provide(logrus.GetLog)
+		app.Fx.Container.Provide(factory.GetLog())
 		return nil
 	}
 }

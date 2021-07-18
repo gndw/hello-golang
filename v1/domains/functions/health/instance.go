@@ -8,6 +8,6 @@ func GetFunction() (f *Function, err error) {
 	return health, nil
 }
 
-func (f *Function) Get() (health *Server, err error) {
+func (f *Function) GetServerHealth() (health *Server, err error) {
 	return &Server{Status: true}, nil
 }
