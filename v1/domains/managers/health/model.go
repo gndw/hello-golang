@@ -1,5 +1,5 @@
 package health
 
-type Server struct {
+type ServerHealthResponse struct {
 	Status bool `json:"status"`
 }

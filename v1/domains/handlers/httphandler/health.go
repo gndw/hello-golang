@@ -1,32 +1,29 @@
 package httphandler
 
 import (
-	"hello-golang/v1/domains/functions/health"
+	"hello-golang/v1/domains/managers/health"
 	"net/http"
-
-	"github.com/go-chi/render"
 )
 
 
 type HealthHandler struct {
-	f *health.Function
+	manager *health.Manager
 }
 
-func GetHealthHandler(f *health.Function) (handler *HealthHandler, err error) {
+func GetHealthHandler(manager *health.Manager) (handler *HealthHandler, err error) {
 	h := &HealthHandler{
-		f: f,
+		manager: manager,
 	}
 	return h, nil
 }
 
-func (h *HealthHandler) Handler(rw http.ResponseWriter, r *http.Request) {
+func (h *HealthHandler) ServerHealthHandler(rw http.ResponseWriter, r *http.Request) {
 	
-	serverStatus, err := h.f.GetServerHealth()
-	if (err != nil) {
-		render.Status(r, 400)
-		render.JSON(rw, r, GenericResponse{Error: err.Error()})
-		return
-	}
+	var (
+		err error
+		serverHealthResponse = &health.ServerHealthResponse{}
+	)
 
-	render.JSON(rw, r, GenericResponse{Data: serverStatus})
+	defer SendingResponse(rw, r, &err, &serverHealthResponse) ()
+	serverHealthResponse, err = h.manager.GetServerHealth()
 }

@@ -16,7 +16,7 @@ func StartHealthSystem(log log.Interface, server *server.Service, handler *httph
 		model.AddRequest{
 			Method: "GET",
 			Endpoint: "/",
-			Handler: handler.Handler,
+			Handler: handler.ServerHealthHandler,
 		},
 	)
 		

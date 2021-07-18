@@ -1,9 +1,9 @@
 package main
 
 import (
-	"hello-golang/v1/domains/functions/auth"
-	"hello-golang/v1/domains/functions/health"
 	"hello-golang/v1/domains/handlers/httphandler"
+	"hello-golang/v1/domains/managers/auth"
+	"hello-golang/v1/domains/managers/health"
 	"hello-golang/v1/domains/startups/httpsups"
 	"hello-golang/v1/functions/builder"
 	"hello-golang/v1/functions/builder/fxb"
@@ -21,8 +21,8 @@ func main() {
 			server.GetService,
 		),
 		fxb.ProvideFunctions(
-			auth.GetFunction,
-			health.GetFunction,
+			auth.GetManager,
+			health.GetManager,
 		),
 		fxb.ProvideHandlers(
 			httphandler.GetAuthHandler,

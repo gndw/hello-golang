@@ -1,19 +1,19 @@
 package httphandler
 
 import (
-	"hello-golang/v1/domains/functions/auth"
+	"hello-golang/v1/domains/managers/auth"
 	"net/http"
 
 	"github.com/go-chi/render"
 )
 
 type AuthHandler struct {
-	f *auth.Function
+	manager *auth.Manager
 }
 
-func GetAuthHandler(f *auth.Function) (auth *AuthHandler, err error) {
+func GetAuthHandler(manager *auth.Manager) (auth *AuthHandler, err error) {
 	h := &AuthHandler{
-		f: f,
+		manager: manager,
 	}
 	return h, nil
 }
@@ -33,5 +33,5 @@ func (h *AuthHandler) LoginHandler(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	loginResponse, err = h.f.Login(loginRequest)
+	loginResponse, err = h.manager.Login(loginRequest)
 }
