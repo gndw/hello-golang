@@ -1,19 +1,42 @@
 package main
 
+import (
+	"hello-golang/v1/domains/handlers/httphandler"
+	"hello-golang/v1/domains/managers/auth"
+	"hello-golang/v1/domains/managers/health"
+	"hello-golang/v1/domains/startups/httpsups"
+	"hello-golang/v1/functions/builder"
+	"hello-golang/v1/functions/builder/fxb"
+	"hello-golang/v1/packages/factory"
+	"hello-golang/v1/services/http/server"
+	"os"
+)
+
+
 func main() {
 
-	// r := mux.NewRouter()
+	app, err := builder.CreateApp(
+		fxb.ProvideServices(
+			factory.GetRouter(),
+			server.GetService,
+		),
+		fxb.ProvideFunctions(
+			auth.GetManager,
+			health.GetManager,
+		),
+		fxb.ProvideHandlers(
+			httphandler.GetAuthHandler,
+			httphandler.GetHealthHandler,
+		),
+		fxb.ProvideStartups(
+			httpsups.StartHealthSystem,
+			httpsups.StartAuthSystem,
+		),
+	)
 
-	// r.HandleFunc("/health", handlers.HealthHandler).Methods("GET")
-	// r.HandleFunc("/auth/login", handlers.LoginHandler).Methods("POST")
-	// r.HandleFunc("/auth/register", handlers.RegisterHandler).Methods("POST")
+	if (err != nil) {
+		os.Exit(1)
+	}
 
-	// dataroute := r.PathPrefix("/data").Subrouter()
-	// dataroute.Use(middlewares.AuthorizationMiddleware)
-	// dataroute.HandleFunc("/self", handlers.DataSelfHandler).Methods("POST")
-
-	// r.Use(middlewares.ContentTypeJSONMiddleware)
-	// r.Use(middlewares.ReadBodyFromHTTPRequestMiddleware)
-
-	// log.Fatal(http.ListenAndServe(":3000", r))
+	app.Run()
 }

@@ -1,11 +1,11 @@
 build-app:
-	echo "Building App..."
-	go build main.go
+	@echo "Building App..."
+	@go build main.go
 
 run-app-win: build-app
-	echo "Running App..."
-	main.exe
+	@echo "Running App..."
+	@main.exe
 
 run-app: build-app
-	echo "Running App..."
-	./main
+	@echo "Running App..."
+	@./main
