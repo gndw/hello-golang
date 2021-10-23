@@ -45,12 +45,28 @@ func ProvideStartups(fs ...interface{}) (opt model.BuilderOption) {
 			savedFunc := f
 
 			app.Fx.Options = append(app.Fx.Options, fx.Invoke(func (sd fx.Shutdowner) {
+
+				defer func ()  {
+					if r := recover(); r != nil {
+						app.Fx.Container.Invoke(func (oe *OnError)  {
+							oe.Execute()
+						})
+						logerr := app.Fx.Container.Invoke(func (logg log.Interface){ logg.Errorf("panic! : %s", r) })
+						if (logerr != nil) {
+							glog.Printf("panic! : %s", r)
+						}
+					}
+				}()
+
 				err := app.Fx.Container.Invoke(savedFunc)
 				if (err != nil) {
 					logerr := app.Fx.Container.Invoke(func (logg log.Interface){ logg.Errorf("failed to invoke startup. err: %s", err) })
 					if (logerr != nil) {
 						glog.Printf("failed to invoke startup. err: %s", err)
 					}
+					app.Fx.Container.Invoke(func (oe *OnError)  {
+						oe.Execute()
+					})
 					sd.Shutdown()
 				}
 			}))

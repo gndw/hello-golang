@@ -7,6 +7,7 @@ require (
 	github.com/go-chi/chi/v5 v5.0.3
 	github.com/go-chi/render v1.0.1
 	github.com/go-pg/pg/v10 v10.9.1
+	github.com/jackc/pgx/v4 v4.12.0
 	github.com/onsi/gomega v1.12.0 // indirect
 	github.com/sirupsen/logrus v1.8.1
 	go.uber.org/dig v1.11.0

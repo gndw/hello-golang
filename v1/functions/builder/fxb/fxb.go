@@ -25,6 +25,12 @@ func CreateContainer() (opt model.BuilderOption) {
 			})
 		}))
 
+		// Appending onerror object
+		// This object handle functions that need to be done, incase of providing error / panic
+		app.Fx.Container.Provide(func () *OnError {
+			return &OnError{}
+		})
+
 		return nil
 
 	}
@@ -34,5 +40,19 @@ func CreateFxApp() (opt model.BuilderOption) {
 	return func(app *model.App) (err error) {
 		app.Fx.Instance = fx.New(app.Fx.Options...)
 		return nil
+	}
+}
+
+type OnError struct {
+	Funcs []func()
+}
+
+func (oe *OnError) Append (f func())  {
+	oe.Funcs = append(oe.Funcs, f)
+}
+
+func (oe *OnError) Execute ()  {
+	for _, fu := range oe.Funcs {
+		fu()
 	}
 }

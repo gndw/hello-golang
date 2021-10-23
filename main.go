@@ -8,6 +8,7 @@ import (
 	"hello-golang/v1/functions/builder"
 	"hello-golang/v1/functions/builder/fxb"
 	"hello-golang/v1/packages/factory"
+	"hello-golang/v1/packages/pgx"
 	"hello-golang/v1/services/http/server"
 	"os"
 )
@@ -19,6 +20,7 @@ func main() {
 		fxb.ProvideServices(
 			factory.GetRouter(),
 			server.GetService,
+			pgx.GetDb,
 		),
 		fxb.ProvideFunctions(
 			auth.GetManager,

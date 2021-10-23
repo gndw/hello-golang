@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"hello-golang/v1/services/db"
 	"hello-golang/v1/services/http/model"
 	"hello-golang/v1/services/http/router"
 	"hello-golang/v1/services/log"
@@ -16,7 +17,7 @@ type Service struct {
 	router router.Interface
 }
 
-func GetService(lc fx.Lifecycle, shutdowner fx.Shutdowner, router router.Interface, log log.Interface) (service *Service, err error) {
+func GetService(lc fx.Lifecycle, shutdowner fx.Shutdowner, router router.Interface, log log.Interface, dbconn db.Interface) (service *Service, err error) {
 	
 	handler, err := router.GetHandler()
 	if (err != nil) {

@@ -5,12 +5,10 @@ import (
 	"hello-golang/v1/packages/logrus"
 	"hello-golang/v1/services/http/router"
 	"hello-golang/v1/services/log"
-
-	"go.uber.org/fx"
 )
 
 
-func GetRouter() func(lc fx.Lifecycle) (router.Interface, error) {
+func GetRouter() func() (router.Interface, error) {
 	return gochi.GetRouter
 }
 

@@ -7,14 +7,13 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"go.uber.org/fx"
 )
 
 type Instance struct {
 	router *chi.Mux
 }
 
-func GetRouter(lc fx.Lifecycle) (router.Interface, error) {
+func GetRouter() (router.Interface, error) {
 
 	ins := &Instance{}
 	ins.router = chi.NewRouter()
